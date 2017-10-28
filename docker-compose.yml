@@ -47,7 +47,7 @@ services:
         - type: volume
           source: /var/docker/postgres
           target: /var/lib/postgresql/data
-  #jenkins 镜像  permission defined https://github.com/jenkinsci/docker/issues/277
+  #jenkins 镜像  permission defined sudo chown -R 1000:1000 /var/docker/jenkins
   jenkins:
     image: jenkins
     restart: always

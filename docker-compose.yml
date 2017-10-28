@@ -20,7 +20,7 @@ services:
       - "1433:1433"
     environment:
       ACCEPT_EULA: Y
-      SA_PASSWORD: Hsulei1993
+      MSSQL_SA_PASSWORD: H123s456l78
     volumes:
       - type: volume
         source: /var/docker/mssql
@@ -43,7 +43,10 @@ services:
       - "5432:5432"
     environment:
         POSTGRES_PASSWORD: 123456
-        PGDATA: /var/docker/postgres
+    volumes:
+        - type: volume
+          source: /var/docker/postgres
+          target: /var/lib/postgresql/data
   #jenkins 镜像  permission defined https://github.com/jenkinsci/docker/issues/277
   jenkins:
     image: jenkins
@@ -73,7 +76,7 @@ services:
       - "1521:1521"
     environment:
       MANUAL_DBCA: "true"
-      VNC_PASSWORD: 123456
+      PASS: 123456
       DBCA_TOTAL_MEMORY: 1024
     volumes:
       - type: volume

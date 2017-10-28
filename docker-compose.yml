@@ -1,0 +1,81 @@
+version: '3.3'
+services:
+  #mysql镜像
+  mysql:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+          - type: volume
+            source: /var/docker/mysql
+            target: /var/lib/mysql
+  #mssql镜像
+  mssql:
+    image: microsoft/mssql-server-linux
+    restart: always
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Hsulei1993
+    volumes:
+      - type: volume
+        source: /var/docker/mssql
+        target: /var/opt/mssql
+  #mongodb镜像
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - type: volume
+        source: /var/docker/mongo
+        target: /data/db
+  #postgresql镜像
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+        POSTGRES_PASSWORD: 123456
+        PGDATA: /var/docker/postgres
+  #jenkins 镜像  permission defined https://github.com/jenkinsci/docker/issues/277
+  jenkins:
+    image: jenkins
+    restart: always
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    volumes:
+      - type: volume
+        source: /var/docker/jenkins
+        target: /var/jenkins_home
+  # redis镜像
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - type: volume
+        source: /var/docker/redis
+        target: /data
+  #oracle 镜像
+  oracle:
+    image: sath89/oracle-12c
+    restart: always
+    ports:
+      - "1521:1521"
+    environment:
+      MANUAL_DBCA: "true"
+      VNC_PASSWORD: 123456
+      DBCA_TOTAL_MEMORY: 1024
+    volumes:
+      - type: volume
+        source: /var/docker/oracle
+        target: /u01/app/oracle

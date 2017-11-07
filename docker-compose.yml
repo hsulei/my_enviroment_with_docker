@@ -82,3 +82,8 @@ services:
       - type: volume
         source: /var/docker/oracle
         target: /u01/app/oracle
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    restart: true
+    ports:
+      - "8082:8080"

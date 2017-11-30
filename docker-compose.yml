@@ -12,6 +12,7 @@ services:
           - type: volume
             source: /var/docker/mysql
             target: /var/lib/mysql
+
   #mssql镜像
   mssql:
     image: microsoft/mssql-server-linux
@@ -35,6 +36,7 @@ services:
       - type: volume
         source: /var/docker/mongo
         target: /data/db
+
   #postgresql镜像
   postgres:
     image: postgres
@@ -82,8 +84,71 @@ services:
       - type: volume
         source: /var/docker/oracle
         target: /u01/app/oracle
+
+  #swagger-editor
   swagger-editor:
     image: swaggerapi/swagger-editor
-    restart: true
+    restart: always
     ports:
       - "8082:8080"
+
+  #nexus私服  chown -R 200 /var/docker/nexus3
+  nexus3:
+    image: sonatype/nexus3
+    restart: always
+    ports:
+      - "8083:8081"
+    volumes:
+      - type: volume
+        source: /var/docker/nexus3
+        target: /nexus-data
+    environment:
+      MAX_HEAP: 768m
+
+  #grafana
+  grafana:
+    image: grafana/grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: 123456
+    volumes:
+      - type: volume
+        source: /var/docker/grafana
+        target: /var/lib/grafana
+    links:
+      - prometheus
+
+  #prometheus  chown -R  nobody  /var/docker/prometheus
+  prometheus:
+    image: quay.io/prometheus/prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - type: volume
+        source: /var/docker/prometheus
+        target: /prometheus
+
+#gitlab
+# gitlab:
+#   image: gitlab/gitlab-ce
+#   restart: always
+#   ports:
+#     - "10443:443"
+#     - "10080:80"
+#     - "10022:22"
+#   volumes:
+#     - type: volume
+#       source: /var/docker/gitlab/data
+#       target: /var/opt/gitlab
+#     - type: volume
+#       source: /var/docker/gitlab/logs
+#       target: /var/log/gitlab
+#     - type: volume
+#       source: /var/docker/gitlab/config
+#       target: /etc/gitlab
+#   links:
+#     - redis
+#     - postgre

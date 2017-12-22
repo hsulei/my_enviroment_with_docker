@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.4'
 services:
   #mysql镜像
   mysql:
@@ -9,23 +9,24 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123456
     volumes:
-          - type: volume
-            source: /var/docker/mysql
-            target: /var/lib/mysql
+      - "/var/docker/mysql:/var/lib/mysql"
+      # - type: volume
+        # source: mysql-target
+        # target: /var/lib/mysql
 
   #mssql镜像
-  mssql:
-    image: microsoft/mssql-server-linux
-    restart: always
-    ports:
-      - "1433:1433"
-    environment:
-      ACCEPT_EULA: Y
-      MSSQL_SA_PASSWORD: H123s456l78
-    volumes:
-      - type: volume
-        source: /var/docker/mssql
-        target: /var/opt/mssql
+  # mssql:
+  #   image: microsoft/mssql-server-linux
+  #   restart: always
+  #   ports:
+  #     - "1433:1433"
+  #   environment:
+  #     ACCEPT_EULA: Y
+  #     MSSQL_SA_PASSWORD: H123s456l78
+  #   volumes:
+  #     - type: volume
+  #       source: /var/docker/mssql
+  #       target: /var/opt/mssql
   #mongodb镜像
   mongo:
     image: mongo
@@ -33,22 +34,23 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - type: volume
-        source: /var/docker/mongo
-        target: /data/db
+      - "/var/docker/mongo:/data/db"
+      # - type: volume
+        # source: mongo-target
+        # target: /data/db
 
   #postgresql镜像
-  postgres:
-    image: postgres
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-        POSTGRES_PASSWORD: 123456
-    volumes:
-        - type: volume
-          source: /var/docker/postgres
-          target: /var/lib/postgresql/data
+  # postgres:
+  #   image: postgres
+  #   restart: always
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #       POSTGRES_PASSWORD: 123456
+  #   volumes:
+  #       - type: volume
+  #         source: /var/docker/postgres
+  #         target: /var/lib/postgresql/data
   #jenkins 镜像  permission defined sudo chown -R 1000:1000 /var/docker/jenkins
   jenkins:
     image: jenkins
@@ -57,9 +59,10 @@ services:
       - "8081:8080"
       - "50000:50000"
     volumes:
-      - type: volume
-        source: /var/docker/jenkins
-        target: /var/jenkins_home
+      - "/var/docker/jenkins:/var/jenkins_home"
+      # - type: volume
+        # source: jenkins-target
+        # target: /var/jenkins_home
   # redis镜像
   redis:
     image: redis
@@ -67,23 +70,24 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - type: volume
-        source: /var/docker/redis
-        target: /data
+      - "/var/docker/redis:/data"
+      # - type: volume
+        # source: redis-target
+        # target: /data
   #oracle 镜像
-  oracle:
-    image: sath89/oracle-12c
-    restart: always
-    ports:
-      - "1521:1521"
-    environment:
-      MANUAL_DBCA: "true"
-      PASS: 123456
-      DBCA_TOTAL_MEMORY: 1024
-    volumes:
-      - type: volume
-        source: /var/docker/oracle
-        target: /u01/app/oracle
+  # oracle:
+  #   image: sath89/oracle-12c
+  #   restart: always
+  #   ports:
+  #     - "1521:1521"
+  #   environment:
+  #     MANUAL_DBCA: "true"
+  #     PASS: 123456
+  #     DBCA_TOTAL_MEMORY: 1024
+  #   volumes:
+  #     - type: volume
+  #       source: /var/docker/oracle
+  #       target: /u01/app/oracle
 
   #swagger-editor
   swagger-editor:
@@ -99,9 +103,10 @@ services:
     ports:
       - "8083:8081"
     volumes:
-      - type: volume
-        source: /var/docker/nexus3
-        target: /nexus-data
+      - "/var/docker/nexus3:/nexus-data"
+      # - type: volume
+        # source: nexus3-target
+        # target: /nexus-data
     environment:
       MAX_HEAP: 768m
 
@@ -114,9 +119,10 @@ services:
     environment:
       GF_SECURITY_ADMIN_PASSWORD: 123456
     volumes:
-      - type: volume
-        source: /var/docker/grafana
-        target: /var/lib/grafana
+      - "/var/docker/grafana:/var/lib/grafana"
+      # - type: volume
+        # source: grafana-target
+        # target: /var/lib/grafana
     links:
       - prometheus
 
@@ -127,28 +133,33 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - type: volume
-        source: /var/docker/prometheus
-        target: /prometheus
+      - "/var/docker/prometheus:/prometheus"
+      #  type: volume
+        # source: prometheus-target
+        # target: /prometheus
 
-#gitlab
-# gitlab:
-#   image: gitlab/gitlab-ce
-#   restart: always
-#   ports:
-#     - "10443:443"
-#     - "10080:80"
-#     - "10022:22"
-#   volumes:
-#     - type: volume
-#       source: /var/docker/gitlab/data
-#       target: /var/opt/gitlab
-#     - type: volume
-#       source: /var/docker/gitlab/logs
-#       target: /var/log/gitlab
-#     - type: volume
-#       source: /var/docker/gitlab/config
-#       target: /etc/gitlab
-#   links:
-#     - redis
-#     - postgre
+ #gitlab
+ #git clone ssh://git@git.hsulei.com:10022/myuser/awesome-project.git
+  gitlab:
+    image: gitlab/gitlab-ce
+    restart: always
+    environment:
+      GITLAB_OMNIBUS_CONFIG:
+        external_url 'http://gitlab.hsulei.com'
+    ports:
+      - "10443:443"
+      - "80:80"
+      - "10022:22"
+    volumes:
+      - "/var/docker/gitlab/data:/var/opt/gitlab"
+      - "/var/docker/gitlab/logs:/var/log/gitlab"
+      - "/var/docker/gitlab/config:/etc/gitlab"
+      # - type: volume
+        # source: gitlab-data-target
+        # target: /var/opt/gitlab
+      # - type: volume
+        # source: gitlab-log-target
+        # target: /var/log/gitlab
+      # - type: volume
+        # source: gitlab-config-target
+        # target: /etc/gitlab

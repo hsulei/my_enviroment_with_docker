@@ -9,7 +9,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123456
     volumes:
-      - "/var/docker/mysql:/var/lib/mysql"
+      - "~/docker/mysql:/var/lib/mysql"
       # - type: volume
         # source: mysql-target
         # target: /var/lib/mysql
@@ -34,7 +34,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - "/var/docker/mongo:/data/db"
+      - "~/docker/mongo:/data/db"
       # - type: volume
         # source: mongo-target
         # target: /data/db
@@ -59,7 +59,7 @@ services:
       - "8081:8080"
       - "50000:50000"
     volumes:
-      - "/var/docker/jenkins:/var/jenkins_home"
+      - "~/docker/jenkins:/var/jenkins_home"
       # - type: volume
         # source: jenkins-target
         # target: /var/jenkins_home
@@ -70,7 +70,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - "/var/docker/redis:/data"
+      - "~/docker/redis:/data"
       # - type: volume
         # source: redis-target
         # target: /data
@@ -103,7 +103,7 @@ services:
     ports:
       - "8083:8081"
     volumes:
-      - "/var/docker/nexus3:/nexus-data"
+      - "~/docker/nexus3:/nexus-data"
       # - type: volume
         # source: nexus3-target
         # target: /nexus-data
@@ -119,7 +119,7 @@ services:
     environment:
       GF_SECURITY_ADMIN_PASSWORD: 123456
     volumes:
-      - "/var/docker/grafana:/var/lib/grafana"
+      - "~/docker/grafana:/var/lib/grafana"
       # - type: volume
         # source: grafana-target
         # target: /var/lib/grafana
@@ -133,7 +133,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - "/var/docker/prometheus:/prometheus"
+      - "~/docker/prometheus:/prometheus"
       #  type: volume
         # source: prometheus-target
         # target: /prometheus
@@ -151,9 +151,9 @@ services:
       - "80:80"
       - "10022:22"
     volumes:
-      - "/var/docker/gitlab/data:/var/opt/gitlab"
-      - "/var/docker/gitlab/logs:/var/log/gitlab"
-      - "/var/docker/gitlab/config:/etc/gitlab"
+      - "~/docker/gitlab/data:/var/opt/gitlab"
+      - "~/docker/gitlab/logs:/var/log/gitlab"
+      - "~/docker/gitlab/config:/etc/gitlab"
       # - type: volume
         # source: gitlab-data-target
         # target: /var/opt/gitlab

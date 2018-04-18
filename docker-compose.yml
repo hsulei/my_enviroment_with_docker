@@ -53,7 +53,7 @@ services:
   #         target: /var/lib/postgresql/data
   #jenkins 镜像  permission defined sudo chown -R 1000:1000 /var/docker/jenkins
   jenkins:
-    image: jenkins
+    image: jenkins/jenkins:lts
     restart: always
     ports:
       - "8081:8080"
@@ -75,19 +75,17 @@ services:
         # source: redis-target
         # target: /data
   #oracle 镜像
-  # oracle:
-  #   image: sath89/oracle-12c
-  #   restart: always
-  #   ports:
-  #     - "1521:1521"
-  #   environment:
-  #     MANUAL_DBCA: "true"
-  #     PASS: 123456
-  #     DBCA_TOTAL_MEMORY: 1024
-  #   volumes:
-  #     - type: volume
-  #       source: /var/docker/oracle
-  #       target: /u01/app/oracle
+  oracle:
+    image: sath89/oracle-12c
+    restart: always
+    ports:
+      - "1521:1521"
+    environment:
+      MANUAL_DBCA: "true"
+      PASS: 123456
+      DBCA_TOTAL_MEMORY: 1024
+    volumes:
+      - "~/docker/oracle:/u01/app/oracle"
 
   #swagger-editor
   swagger-editor:
@@ -138,28 +136,3 @@ services:
         # source: prometheus-target
         # target: /prometheus
 
- #gitlab
- #git clone ssh://git@git.hsulei.com:10022/myuser/awesome-project.git
-  gitlab:
-    image: gitlab/gitlab-ce
-    restart: always
-    environment:
-      GITLAB_OMNIBUS_CONFIG:
-        external_url 'http://gitlab.hsulei.com'
-    ports:
-      - "10443:443"
-      - "80:80"
-      - "10022:22"
-    volumes:
-      - "~/docker/gitlab/data:/var/opt/gitlab"
-      - "~/docker/gitlab/logs:/var/log/gitlab"
-      - "~/docker/gitlab/config:/etc/gitlab"
-      # - type: volume
-        # source: gitlab-data-target
-        # target: /var/opt/gitlab
-      # - type: volume
-        # source: gitlab-log-target
-        # target: /var/log/gitlab
-      # - type: volume
-        # source: gitlab-config-target
-        # target: /etc/gitlab

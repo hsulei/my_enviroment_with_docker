@@ -1,0 +1,12 @@
+version: '3.4'
+services:
+  oracle11g:
+    image: sath89/oracle-xe-11g
+    restart: always
+    port: 
+      - "8081:8080"
+      - "1521:1521"
+    environment:
+      DEFAULT_SYS_PASS: 123456
+    volumes:
+      - "C:/docker/oracle-11g:/u01/app/oracle"
